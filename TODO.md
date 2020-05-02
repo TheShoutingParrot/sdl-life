@@ -5,6 +5,7 @@ This TODO list contains all of the features/additions we do. This list is ordere
 3. Add pause / resume functionality
 4. Make it so that when you click on a block in the grid you add a new cell to that block
 5. Add more comments to the code and generally add more documentation
+6. Make a .desktop file for this program
 
 If you can in any way help me do any of these things you are greatly appreciated!
 
