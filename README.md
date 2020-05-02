@@ -19,7 +19,7 @@ Simple example: `sdl-life glider.cells`
 
 Currently this program only reads and executes `.cells` files. If you don't give it a valid `.cells` file it will not work properly.
 
-One reason why many patterns that have a some what big bounding boxes break or atleast don't work exactly how they are supposed to is that the grid is by default really small; change the grid's size with the arguments `-gridw` and `-gridh` for example `sdl-life -gridw 100 -gridh 100 gosperglidergun.cells`.
+One reason why many patterns that have a some what big bounding box break or atleast don't work exactly how they are supposed to is that the grid is by default really small; change the grid's size with the arguments `-gridw` and `-gridh` for example `sdl-life -gridw 100 -gridh 100 gosperglidergun.cells`.
 
 ### Keybindings
 
