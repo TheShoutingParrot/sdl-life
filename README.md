@@ -38,6 +38,9 @@ sdl-life as seen on Ubuntu gnome.
 ![Alt text](screenshots/screenshot-i3-1.png?raw=true "Title")
 ![Alt text](screenshots/screenshot-i3-2.png?raw=true "Title")
 ![Alt text](screenshots/screenshot-i3-3.png?raw=true "Title")
+
+As you can see sdl-life supports a plentitude of colors.
+
 ![Alt text](screenshots/screenshot-i3-4.png?raw=true "Title")
 ## License information
 
