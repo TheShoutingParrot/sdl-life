@@ -5,7 +5,7 @@
  */
 
 /*
- * Here's a short TODO list:
+ * Here's a short TODO list: (this isn't a complete list anymore, some goals have been added to the TODO.md file.)
  * 	PRIORITY 1: Add multithreading (one render thread and one event handling thread)	DONE!
  * 	PRIORITY 2: Add RLE file format support
  * 	PRIORITY 3: Add a zoom in and zoom out functionality
@@ -43,6 +43,7 @@ int main(int argc, char *args[]) {
 
 	fillCell = false;
 
+	// This for loop parses through the command line arguments
 	for(i = 1; i < argc; i++) {
 		if(*args[i] == '-') {
 			if(!strcmp(args[i], "-gridw"))
@@ -127,6 +128,7 @@ int main(int argc, char *args[]) {
 	return EXIT_SUCCESS;
 }
 
+// This function simply initializes SDL, creates the window (gWindow), creates the renderer to be used with the window (gRenderer) and finally creates a general semaphore (gLock)
 bool initSdl(void) {
 	SDL_LogVerbose(SDL_LOG_CATEGORY_APPLICATION, "The initialization process has begun");
 	if(SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -153,6 +155,7 @@ bool initSdl(void) {
 	return true;
 }
 
+// This function simply closes SDL by freeing/destroying some memory and quitting SDL
 void closeSdl(void) {
 	SDL_LogVerbose(SDL_LOG_CATEGORY_APPLICATION, "SDL is shutting DOWN!");
 
@@ -251,6 +254,7 @@ int renderThread(void *data) {
 	return 0;
 }
 
+// This function reads the cell file, currently can only read a plaintext cell (.cells) file
 void readFile(const char *fname) {
 	FILE *cellFile;
 	size_t row, col, len;

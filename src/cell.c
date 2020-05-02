@@ -1,5 +1,12 @@
+/*
+ * simplestopwatch
+ * Copyright © 2020 Victor Ocampo
+ * All rights reserved
+ */
+
 #include "sdl-life.h"
 
+// This function initializes the cells as a pointer
 bool initCells(void) {
         cells = (cellState_t *)calloc((gridHeight * gridWidth), sizeof(cellState_t));
         if(cells == NULL) {
@@ -10,6 +17,7 @@ bool initCells(void) {
         return true;
 }
 
+// This function updates the size of the grid based on the new width and height
 bool updateCells(int w, int h) {
         blockHeight = roundUp((float)h / (float)gridHeight);
         blockWidth = roundUp((float)w / (float)gridWidth);
@@ -17,14 +25,17 @@ bool updateCells(int w, int h) {
         return false;
 }
 
+// Writes to a cell
 void writeCell(size_t row, size_t col, cellState_t state) {
         *(cells + (col + (row * gridWidth))) = state;
 }
 
+// Reads a cell's state
 cellState_t readCell(size_t row, size_t col) {
         return *(cells + (col + (row * gridWidth)));
 }
 
+// Returns the amount of cells around a certain cell
 uint8_t cellsAroundCell(size_t row, size_t col) {
         uint8_t r, i;
 
@@ -50,6 +61,7 @@ uint8_t cellsAroundCell(size_t row, size_t col) {
         return r;
 }
 
+// This function proceeds to the next generation "enforcing" the rules in some sense
 void enforceRules(void) {
         size_t r, c, cellsAround;
 
@@ -83,6 +95,7 @@ void enforceRules(void) {
         }
 }
 
+// This displays one cell on the window
 void displayCell(cellState_t status, SDL_Rect location) {
         if(status == live) {
                 SDL_SetRenderDrawColor(gRenderer, filledR, filledG, filledB, 0);
@@ -99,6 +112,7 @@ void displayCell(cellState_t status, SDL_Rect location) {
         }
 }
 
+// This displays all of the cells on the window
 void displayAllCells(void) {
         size_t x, y;
         SDL_Rect location;
