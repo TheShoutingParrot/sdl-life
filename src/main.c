@@ -24,6 +24,8 @@ int main(int argc, char *args[]) {
 	int fnameN; // The index of the file name in the args list
 	size_t i;
 
+	paused = false;
+
 	fnameN = 0;
 
 	gridHeight = 50;
@@ -190,6 +192,9 @@ int eventThread(void *data) {
 
 						SDL_SemPost(gLock);
 					}
+				case SDL_KEYDOWN:
+					if(e.key.keysym.sym == SDLK_SPACE && e.key.keysym.mod == KMOD_NONE)
+						paused = !paused;
 			}
 		}
 	} while(!quitLoop);
@@ -206,27 +211,31 @@ int renderThread(void *data) {
 	size_t startTime, frameTicks;
 
 	while(!quitLoop) {
-		startTime = SDL_GetTicks();
+		if(!paused) {
+			startTime = SDL_GetTicks();
 
-		SDL_SemWait(gLock); // Semaphore necessary because we are using gRenderer and gWindow
+			SDL_SemWait(gLock); // Semaphore necessary because we are using gRenderer and gWindow
 
-		SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0x00);
+			SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0x00);
 
-		SDL_RenderClear(gRenderer);
+			SDL_RenderClear(gRenderer);
 
-		displayAllCells();
-		enforceRules();
+			displayAllCells();
+			enforceRules();
 
-		SDL_RenderPresent(gRenderer);
+			SDL_RenderPresent(gRenderer);
 
-		SDL_SemPost(gLock);
+			SDL_SemPost(gLock);
 
-		frameTicks = SDL_GetTicks() - startTime;
-		if(frameTicks < (1000 / fpsCap))
-		       SDL_Delay((1000 / fpsCap) - frameTicks);	
+			frameTicks = SDL_GetTicks() - startTime;
+			if(frameTicks < (1000 / fpsCap))
+			       SDL_Delay((1000 / fpsCap) - frameTicks);	
+		}
 	}
 	
 	SDL_LogVerbose(SDL_LOG_CATEGORY_APPLICATION, "%s has finished\n", data);
+
+	return 0;
 }
 
 bool initCells(void) {

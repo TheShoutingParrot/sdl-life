@@ -57,7 +57,8 @@ uint8_t                 emptyR,
 cellState_t             *cells;
 
 bool                    quitLoop,
-                        fillCell;
+                        fillCell,
+			paused;
 
 bool initSdl(void);
 void closeSdl(void);
