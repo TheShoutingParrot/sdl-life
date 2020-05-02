@@ -5,7 +5,7 @@
  */
 
 /*
- * Here's a short TODO list: (this isn't a complete list anymore, some goals have been added to the TODO.md file.)
+ * Here's a short TODO list: (this isn't a complete list anymore, some goals have been added to the TODO.md file and haven't been added her and haven't been added heree.)
  * 	PRIORITY 1: Add multithreading (one render thread and one event handling thread)	DONE!
  * 	PRIORITY 2: Add RLE file format support
  * 	PRIORITY 3: Add a zoom in and zoom out functionality
