@@ -28,6 +28,17 @@ One reason why many patterns that have a some what big bounding box break or atl
 
 	-Space		-Pause/Resume
 
+## Screenshots
+
+![Alt text](screenshots/screenshot-gnome-1.png?raw=true "Title")
+![Alt text](screenshots/screenshot-gnome-2.png?raw=true "Title")
+
+sdl-life as seen on Ubuntu gnome.
+
+![Alt text](screenshots/screenshot-i3-1.png?raw=true "Title")
+![Alt text](screenshots/screenshot-i3-2.png?raw=true "Title")
+![Alt text](screenshots/screenshot-i3-3.png?raw=true "Title")
+![Alt text](screenshots/screenshot-i3-4.png?raw=true "Title")
 ## License information
 
 This project is licensed under the terms of the [BSD 2-Clause license](https://opensource.org/licenses/BSD-2-Clause), see the [LICENSE](LICENSE) file for further information.
