@@ -5,7 +5,7 @@
 
 include config.mk
 
-OBJ = src/main.o src/util.o
+OBJ = src/main.o src/cell.o src/util.o
 
 all: clean sdl-life 
 
@@ -15,7 +15,7 @@ all: clean sdl-life
 $(OBJ): src/sdl-life.h 
 
 sdl-life: $(OBJ)
-	$(CC) -o $@ main.o util.o $(LDFLAGS)
+	$(CC) -o $@ main.o cell.o util.o $(LDFLAGS)
 
 install: all
 	mkdir -p $(PREFIX)/bin
@@ -27,6 +27,6 @@ uninstall: clean
 	rm -f $(PREFIX)/bin/sdl-life
 
 clean:
-	rm -f sdl-life main.o util.o 
+	rm -f sdl-life main.o cell.o util.o 
 
 .PHONY: all sdl-life install uninstall clean
