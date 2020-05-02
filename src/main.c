@@ -209,6 +209,14 @@ int renderThread(void *data) {
 	SDL_LogVerbose(SDL_LOG_CATEGORY_APPLICATION, "%s is starting...\n", data);
 
 	size_t startTime, frameTicks;
+	int w, h;
+
+	SDL_SemWait(gLock);
+
+	SDL_GetWindowSize(gWindow, &w, &h);
+	updateCells(w, h);
+
+	SDL_SemPost(gLock);
 
 	while(!quitLoop) {
 		if(!paused) {
