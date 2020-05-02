@@ -19,7 +19,7 @@
 #define WINDOWW         640
 #define WINDOWH         480
 
-#define FPSCAP          15              // Default fps to be capped on
+#define FPSCAP          10              // Default fps to be capped on
 
 #define EMPTY_GRID_R    0x00
 #define EMPTY_GRID_G    0x00

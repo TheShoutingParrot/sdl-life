@@ -9,7 +9,7 @@
  * 	PRIORITY 1: Add multithreading (one render thread and one event handling thread)	DONE!
  * 	PRIORITY 2: Add RLE file format support
  * 	PRIORITY 3: Add a zoom in and zoom out functionality
- *	PRIORITY 4: Add pause / resume functionality
+ *	PRIORITY 4: Add pause / resume functionality						DONE!
  * 	PRIORITY 5: Add more comments to the code and generally add more documentation
  *
  *
@@ -115,7 +115,9 @@ int main(int argc, char *args[]) {
 	eventThreadID = SDL_CreateThread(eventThread, "event thread", (void *)"Event Thread");
 	renderThreadID = SDL_CreateThread(renderThread, "render thread", (void *)"Render Thread");
 
-	while(!quitLoop);
+	while(!quitLoop) {
+		SDL_Delay(100); // Without this delay the CPU usage goes through the roof
+	}
 
 	closeSdl();
 
@@ -185,6 +187,7 @@ int eventThread(void *data) {
 						SDL_RenderClear(gRenderer);
 
 						SDL_GetWindowSize(gWindow, &w, &h);
+
 						updateCells(w, h);
 						displayAllCells();
 
@@ -197,6 +200,8 @@ int eventThread(void *data) {
 						paused = !paused;
 			}
 		}
+		
+		SDL_Delay(10);
 	} while(!quitLoop);
 
 	SDL_LogVerbose(SDL_LOG_CATEGORY_APPLICATION, "%s has finished\n", data);
