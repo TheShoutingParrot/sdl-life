@@ -201,7 +201,7 @@ int eventThread(void *data) {
 			}
 		}
 		
-		SDL_Delay(10);
+		SDL_Delay(20);
 	} while(!quitLoop);
 
 	SDL_LogVerbose(SDL_LOG_CATEGORY_APPLICATION, "%s has finished\n", data);
@@ -344,8 +344,8 @@ void readFile(const char *fname) {
 	if(cellFile == NULL)
 		die(__FILE__, __LINE__, "Couldn't open file: %s\n", fname);
 
-	row = 1;
-	col = 1;
+	row = 2;
+	col = 5;
 
 	len = strlen(fname);
 
@@ -368,7 +368,7 @@ void readFile(const char *fname) {
 		}
 		if(currentCell == '\n') {
 			row++;
-			col = 1;
+			col = 5;
 		}
 	}
 
