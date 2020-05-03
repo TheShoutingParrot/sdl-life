@@ -28,9 +28,9 @@ One reason why many patterns that have a some what big bounding box break or atl
 
 ### Keybindings
 
-	-Space		-Pause/Resume
-	-w/a/s/d	-Move around the grid (up/down/left/right)
-	-Mouse scroll	-Zoom in and out
+	-Space					-Pause/Resume
+	-w/a/s/d				-Move around the grid (up/down/left/right)
+	-Mouse scroll and PLUS (+) / MINUS (-)	-Zoom in and out
 
 ## Screenshots
 
