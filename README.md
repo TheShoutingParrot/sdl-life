@@ -14,6 +14,8 @@ This program currently lacks many features that are to be expected from a *full*
 This program has the following features:
 * All Conway's game of life [rules](https://www.conwaylife.com/wiki/Conway%27s_Game_of_Life#Rules) working
 * Pause and resume
+* Zoom in and out
+* Move around the grid
 * Support for reading [plaintext cell files](https://www.conwaylife.com/wiki/Plaintext) (.cells)
 
 ## Usage
@@ -27,6 +29,8 @@ One reason why many patterns that have a some what big bounding box break or atl
 ### Keybindings
 
 	-Space		-Pause/Resume
+	-w/a/s/d	-Move around the grid (up/down/left/right)
+	-Mouse scroll	-Zoom in and out
 
 ## Screenshots
 
