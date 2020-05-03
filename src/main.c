@@ -173,7 +173,6 @@ void closeSdl(void) {
 // This is the thread that handles all of the events
 int eventThread(void *data) {
 	SDL_Event e;
-	int w, h;
 
 	SDL_LogVerbose(SDL_LOG_CATEGORY_APPLICATION, "%s is starting...\n", data);
 
@@ -187,20 +186,7 @@ int eventThread(void *data) {
 						// We update the screen here even though this is not the render thread so that the window resizes 
 						// independent of the fps cap
 						
-						SDL_SemWait(gLock); // Semaphore necessary because we are using gRenderer and gWindow
-
-						SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0x00);
-
-						SDL_RenderClear(gRenderer);
-
-						SDL_GetWindowSize(gWindow, &w, &h);
-
-						updateCells(w, h);
-						displayAllCells();
-
-						SDL_RenderPresent(gRenderer);
-
-						SDL_SemPost(gLock);
+						resizeWindow();
 					}
 					break;
 				case SDL_KEYDOWN:
@@ -222,37 +208,29 @@ int eventThread(void *data) {
 						startOfDisplayedGridWidth++;
 						endOfDisplayedGridWidth++;
 					}
+					else if(e.key.keysym.sym == SDLK_PLUS && (endOfDisplayedGridHeight - startOfDisplayedGridHeight) > 1 
+							&& (endOfDisplayedGridWidth - startOfDisplayedGridWidth) > 2) {
+						zoomIn();
+
+						resizeWindow();
+					}
+					else if(e.key.keysym.sym == SDLK_MINUS && startOfDisplayedGridHeight > 0 && startOfDisplayedGridWidth > 0) {
+						zoomOut();
+
+						resizeWindow();
+					}
 
 					break;
 				case SDL_MOUSEWHEEL:
 					if(e.wheel.y > 0 && (endOfDisplayedGridHeight - startOfDisplayedGridHeight) > 1 
 							&& (endOfDisplayedGridWidth - startOfDisplayedGridWidth) > 2) {
-						startOfDisplayedGridHeight++;
-						startOfDisplayedGridWidth++;
-						endOfDisplayedGridHeight--;
-						endOfDisplayedGridWidth--;
+						zoomIn();
 					}
 					else if(e.wheel.y < 0 && startOfDisplayedGridHeight > 0 && startOfDisplayedGridWidth > 0) {
-						startOfDisplayedGridHeight--;
-						startOfDisplayedGridWidth--;
-						endOfDisplayedGridHeight++;
-						endOfDisplayedGridWidth++;
+						zoomOut();
 					}
 
-					SDL_SemWait(gLock); // Semaphore necessary because we are using gRenderer and gWindow
-
-					SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0x00);
-
-					SDL_RenderClear(gRenderer);
-
-					SDL_GetWindowSize(gWindow, &w, &h);
-
-					updateCells(w, h);
-					displayAllCells();
-
-					SDL_RenderPresent(gRenderer);
-
-					SDL_SemPost(gLock);
+					resizeWindow();
 
 					break;
 			}
@@ -306,6 +284,39 @@ int renderThread(void *data) {
 	SDL_LogVerbose(SDL_LOG_CATEGORY_APPLICATION, "%s has finished\n", data);
 
 	return 0;
+}
+
+void resizeWindow(void) {
+	int w, h;
+
+	SDL_SemWait(gLock); // Semaphore necessary because we are using gRenderer and gWindow
+
+	SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0x00);
+
+	SDL_RenderClear(gRenderer);
+
+	SDL_GetWindowSize(gWindow, &w, &h);
+
+	updateCells(w, h);
+	displayAllCells();
+
+	SDL_RenderPresent(gRenderer);
+
+	SDL_SemPost(gLock);
+}
+
+void zoomIn(void) {
+	startOfDisplayedGridHeight++;
+	startOfDisplayedGridWidth++;
+	endOfDisplayedGridHeight--;
+	endOfDisplayedGridWidth--;
+}
+
+void zoomOut(void) {
+	startOfDisplayedGridHeight--;
+	startOfDisplayedGridWidth--;
+	endOfDisplayedGridHeight++;
+	endOfDisplayedGridWidth++;
 }
 
 // This function reads the cell file, currently can only read a plaintext cell (.cells) file

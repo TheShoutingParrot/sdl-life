@@ -72,6 +72,10 @@ bool loadMedia(void);
 int eventThread(void *data);
 int renderThread(void *data);
 
+void resizeWindow(void);
+void zoomIn(void);
+void zoomOut(void);
+
 bool initCells(void);
 bool updateCells(int w, int h);
 void writeCell(size_t row, size_t col, cellState_t state);
