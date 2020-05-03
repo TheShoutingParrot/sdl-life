@@ -8,7 +8,7 @@
  * Here's a short TODO list: (this isn't a complete list anymore, some goals have been added to the TODO.md file and haven't been added here and haven't been added heree.)
  * 	PRIORITY 1: Add multithreading (one render thread and one event handling thread)	DONE!
  * 	PRIORITY 2: Add RLE file format support
- * 	PRIORITY 3: Add a zoom in and zoom out functionality
+ * 	PRIORITY 3: Add a zoom in and zoom out functionality					(somewhat) DONE!
  *	PRIORITY 4: Add pause / resume functionality						DONE!
  * 	PRIORITY 5: Add more comments to the code and generally add more documentation
  *
@@ -19,8 +19,8 @@
 #include "sdl-life.h"
 
 int main(int argc, char *args[]) {
-	SDL_Thread *eventThreadID,
-		   *renderThreadID;
+	SDL_Thread *renderThreadID;
+	SDL_Event e;
 	int fnameN; // The index of the file name in the args list
 	size_t i;
 
@@ -117,66 +117,9 @@ int main(int argc, char *args[]) {
 
 	quitLoop = false;
 
-	eventThreadID = SDL_CreateThread(eventThread, "event thread", (void *)"Event Thread");
 	renderThreadID = SDL_CreateThread(renderThread, "render thread", (void *)"Render Thread");
 
 	while(!quitLoop) {
-		SDL_Delay(1000); // Without this delay the CPU usage goes through the roof
-	}
-
-	closeSdl();
-
-	SDL_WaitThread(eventThreadID, NULL);
-	SDL_WaitThread(renderThreadID, NULL);
-
-	return EXIT_SUCCESS;
-}
-
-// This function simply initializes SDL, creates the window (gWindow), creates the renderer to be used with the window (gRenderer) and finally creates a general semaphore (gLock)
-bool initSdl(void) {
-	SDL_LogVerbose(SDL_LOG_CATEGORY_APPLICATION, "The initialization process has begun");
-	if(SDL_Init(SDL_INIT_VIDEO) < 0) {
-		SDL_LogWarn(SDL_LOG_CATEGORY_ERROR, "Failed to initialize SDL: %s", SDL_GetError());
-		return false;
-	}
-
-	gWindow = SDL_CreateWindow(WINDOW_NAME, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOWW, WINDOWH, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
-	if(gWindow == NULL) {
-		SDL_LogWarn(SDL_LOG_CATEGORY_ERROR, "Failed to create the window: %s", SDL_GetError());
-		return false;
-	}
-
-	gRenderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-	if(gRenderer == NULL) {
-		SDL_LogWarn(SDL_LOG_CATEGORY_ERROR, "Failed to create the renderer: %s", SDL_GetError());
-		return false;
-	}
-
-	gLock = SDL_CreateSemaphore(1);
-
-	SDL_LogVerbose(SDL_LOG_CATEGORY_APPLICATION, "The initialization has finished");
-
-	return true;
-}
-
-// This function simply closes SDL by freeing/destroying some memory and quitting SDL
-void closeSdl(void) {
-	SDL_LogVerbose(SDL_LOG_CATEGORY_APPLICATION, "SDL is shutting DOWN!");
-
-	SDL_DestroySemaphore(gLock);
-	SDL_DestroyRenderer(gRenderer);
-	SDL_DestroyWindow(gWindow);
-
-	SDL_Quit();
-}
-
-// This is the thread that handles all of the events
-int eventThread(void *data) {
-	SDL_Event e;
-
-	SDL_LogVerbose(SDL_LOG_CATEGORY_APPLICATION, "%s is starting...\n", data);
-
-	do {
 		while(SDL_PollEvent(&e)) {
 			switch(e.type) {
 				case SDL_QUIT:
@@ -184,7 +127,7 @@ int eventThread(void *data) {
 				case SDL_WINDOWEVENT:
 					if(e.window.event == SDL_WINDOWEVENT_RESIZED) {
 						// We update the screen here even though this is not the render thread so that the window resizes 
-						// independent of the fps cap
+						// independent of the fps cap. Actually the FPS cap is more of a "gps" cap: generations per second cap.
 						
 						resizeWindow();
 					}
@@ -235,13 +178,53 @@ int eventThread(void *data) {
 					break;
 			}
 		}
-		
-		SDL_Delay(20);
-	} while(!quitLoop);
 
-	SDL_LogVerbose(SDL_LOG_CATEGORY_APPLICATION, "%s has finished\n", data);
+		SDL_Delay(100);
+	}
 
-	return 0;
+	closeSdl();
+
+	SDL_WaitThread(renderThreadID, NULL);
+
+	return EXIT_SUCCESS;
+}
+
+// This function simply initializes SDL, creates the window (gWindow), creates the renderer to be used with the window (gRenderer) and finally creates a general semaphore (gLock)
+bool initSdl(void) {
+	SDL_LogVerbose(SDL_LOG_CATEGORY_APPLICATION, "The initialization process has begun");
+	if(SDL_Init(SDL_INIT_VIDEO) < 0) {
+		SDL_LogWarn(SDL_LOG_CATEGORY_ERROR, "Failed to initialize SDL: %s", SDL_GetError());
+		return false;
+	}
+
+	gWindow = SDL_CreateWindow(WINDOW_NAME, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOWW, WINDOWH, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+	if(gWindow == NULL) {
+		SDL_LogWarn(SDL_LOG_CATEGORY_ERROR, "Failed to create the window: %s", SDL_GetError());
+		return false;
+	}
+
+	gRenderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	if(gRenderer == NULL) {
+		SDL_LogWarn(SDL_LOG_CATEGORY_ERROR, "Failed to create the renderer: %s", SDL_GetError());
+		return false;
+	}
+
+	gLock = SDL_CreateSemaphore(1);
+
+	SDL_LogVerbose(SDL_LOG_CATEGORY_APPLICATION, "The initialization has finished");
+
+	return true;
+}
+
+// This function simply closes SDL by freeing/destroying some memory and quitting SDL
+void closeSdl(void) {
+	SDL_LogVerbose(SDL_LOG_CATEGORY_APPLICATION, "SDL is shutting DOWN!");
+
+	SDL_DestroySemaphore(gLock);
+	SDL_DestroyRenderer(gRenderer);
+	SDL_DestroyWindow(gWindow);
+
+	SDL_Quit();
 }
 
 // This is the thread that renders the cells to the screen
