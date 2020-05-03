@@ -5,7 +5,7 @@
  */
 
 /*
- * Here's a short TODO list: (this isn't a complete list anymore, some goals have been added to the TODO.md file and haven't been added her and haven't been added heree.)
+ * Here's a short TODO list: (this isn't a complete list anymore, some goals have been added to the TODO.md file and haven't been added here and haven't been added heree.)
  * 	PRIORITY 1: Add multithreading (one render thread and one event handling thread)	DONE!
  * 	PRIORITY 2: Add RLE file format support
  * 	PRIORITY 3: Add a zoom in and zoom out functionality
@@ -28,8 +28,12 @@ int main(int argc, char *args[]) {
 
 	fnameN = 0;
 
-	gridHeight = 50;
-	gridWidth = 50;
+	startOfDisplayedGridHeight = 25;
+	startOfDisplayedGridWidth = 25;
+	endOfDisplayedGridHeight = 75;
+	endOfDisplayedGridWidth = 75;
+	gridHeight = 100;
+	gridWidth = 100;
 
 	fpsCap = FPSCAP;
 
@@ -117,7 +121,7 @@ int main(int argc, char *args[]) {
 	renderThreadID = SDL_CreateThread(renderThread, "render thread", (void *)"Render Thread");
 
 	while(!quitLoop) {
-		SDL_Delay(100); // Without this delay the CPU usage goes through the roof
+		SDL_Delay(1000); // Without this delay the CPU usage goes through the roof
 	}
 
 	closeSdl();
@@ -198,9 +202,59 @@ int eventThread(void *data) {
 
 						SDL_SemPost(gLock);
 					}
+					break;
 				case SDL_KEYDOWN:
 					if(e.key.keysym.sym == SDLK_SPACE && e.key.keysym.mod == KMOD_NONE)
 						paused = !paused;
+					else if(e.key.keysym.sym == SDLK_w && e.key.keysym.mod == KMOD_NONE && startOfDisplayedGridHeight > 0) {
+						startOfDisplayedGridHeight--;
+						endOfDisplayedGridHeight--;
+					}
+					else if(e.key.keysym.sym == SDLK_s && e.key.keysym.mod == KMOD_NONE && endOfDisplayedGridHeight < gridHeight) {
+						startOfDisplayedGridHeight++;
+						endOfDisplayedGridHeight++;
+					}
+					else if(e.key.keysym.sym == SDLK_a && e.key.keysym.mod == KMOD_NONE && startOfDisplayedGridWidth > 0) {
+						startOfDisplayedGridWidth--;
+						endOfDisplayedGridWidth--;
+					}
+					else if(e.key.keysym.sym == SDLK_d && e.key.keysym.mod == KMOD_NONE && endOfDisplayedGridWidth < gridWidth) {
+						startOfDisplayedGridWidth++;
+						endOfDisplayedGridWidth++;
+					}
+
+					break;
+				case SDL_MOUSEWHEEL:
+					if(e.wheel.y > 0 && (endOfDisplayedGridHeight - startOfDisplayedGridHeight) > 1 
+							&& (endOfDisplayedGridWidth - startOfDisplayedGridWidth) > 2) {
+						startOfDisplayedGridHeight++;
+						startOfDisplayedGridWidth++;
+						endOfDisplayedGridHeight--;
+						endOfDisplayedGridWidth--;
+					}
+					else if(e.wheel.y < 0 && startOfDisplayedGridHeight > 0 && startOfDisplayedGridWidth > 0) {
+						startOfDisplayedGridHeight--;
+						startOfDisplayedGridWidth--;
+						endOfDisplayedGridHeight++;
+						endOfDisplayedGridWidth++;
+					}
+
+					SDL_SemWait(gLock); // Semaphore necessary because we are using gRenderer and gWindow
+
+					SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0x00);
+
+					SDL_RenderClear(gRenderer);
+
+					SDL_GetWindowSize(gWindow, &w, &h);
+
+					updateCells(w, h);
+					displayAllCells();
+
+					SDL_RenderPresent(gRenderer);
+
+					SDL_SemPost(gLock);
+
+					break;
 			}
 		}
 		
@@ -265,8 +319,8 @@ void readFile(const char *fname) {
 	if(cellFile == NULL)
 		die(__FILE__, __LINE__, "Couldn't open file: %s\n", fname);
 
-	row = 2;
-	col = 5;
+	row = startOfDisplayedGridHeight + 5;
+	col = startOfDisplayedGridWidth + 5;
 
 	len = strlen(fname);
 
@@ -289,7 +343,7 @@ void readFile(const char *fname) {
 		}
 		if(currentCell == '\n') {
 			row++;
-			col = 5;
+			col = startOfDisplayedGridWidth + 5;
 		}
 	}
 

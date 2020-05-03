@@ -41,10 +41,14 @@ SDL_Renderer            *gRenderer;
 
 SDL_sem                 *gLock; // This is a general semaphore, used for gRenderer and gWindow
 
-size_t                  blockHeight,    // Height of cell
-                        blockWidth,     // Width of cell
-                        gridHeight,     // Height of the whole grid
-                        gridWidth,      // Width of the whole grid
+size_t                  blockHeight,    	// Height of cell
+                        blockWidth,		// Width of cell
+                        gridHeight,     	// Height of the whole grid
+                        gridWidth,      	// Width of the whole grid
+			startOfDisplayedGridHeight,	
+			startOfDisplayedGridWidth,	
+			endOfDisplayedGridHeight,	
+			endOfDisplayedGridWidth,	
                         fpsCap;
 
 uint8_t                 emptyR,

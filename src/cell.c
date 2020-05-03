@@ -19,8 +19,8 @@ bool initCells(void) {
 
 // This function updates the size of the grid based on the new width and height
 bool updateCells(int w, int h) {
-        blockHeight = roundUp((float)h / (float)gridHeight);
-        blockWidth = roundUp((float)w / (float)gridWidth);
+        blockHeight = roundUp((float)h / (float)(endOfDisplayedGridHeight - startOfDisplayedGridHeight));
+        blockWidth = roundUp((float)w / (float)(endOfDisplayedGridWidth - startOfDisplayedGridWidth));
 
         return false;
 }
@@ -65,7 +65,7 @@ uint8_t cellsAroundCell(size_t row, size_t col) {
 void enforceRules(void) {
         size_t r, c, cellsAround;
 
-        for(r = 0; r < gridHeight; r++) {
+        for(r = 25; r < gridHeight; r++) {
                 for(c = 0; c < gridWidth; c++) {
                         cellsAround = cellsAroundCell(r, c);
 
@@ -122,8 +122,8 @@ void displayAllCells(void) {
         location.x = 0;
         location.y = 0;
 
-        for(y = 0; y < gridHeight; y++) {
-                for(x = 0; x < gridWidth; x++) {
+        for(y = startOfDisplayedGridHeight; y < endOfDisplayedGridHeight; y++) {
+                for(x = startOfDisplayedGridWidth; x < endOfDisplayedGridWidth; x++) {
                         displayCell(readCell(y, x), location);
 
                         location.x += location.w;
