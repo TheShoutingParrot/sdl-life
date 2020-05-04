@@ -2,10 +2,7 @@
 This TODO list contains all of the features/additions we want to add to this program. This list is ordered by priority.
 
 1. Add RLE file format support
-2. Add a zoom in and zoom out functionality
-
-	* This has been added but it doesn't work as well as I would want it to which is why I wont remove it from this list yet.
-
+2. Work on zoom in and zoom out 
 3. Make it so that when you click on a block in the grid you add a new cell to that block
 4. Add more comments to the code and generally add more documentation
 5. Make a .desktop file for this program
@@ -18,3 +15,4 @@ This is a list of all the features that have been implemented since the TODO lis
 
 * Add multithreading functionality (one render thread and one event handling thread)
 * Add pause / resume functionality
+* Add a zoom in and zoom out functionality
