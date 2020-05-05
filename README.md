@@ -4,10 +4,6 @@ This program is a simple graphical implementation of Conway's game of life which
 
 ![Alt text](screenshots/screenshot-i3-5.png?raw=true "Glider")
 
-## Installation
-
-To install this program `make install` must be executed on the command prompt, this command will install the program to PREFIX/bin. This program has been only tested on Linux using X11.
-
 ## Features
 
 This program currently lacks many features that are to be expected from a *full* game of life implementation.
@@ -18,6 +14,10 @@ This program has the following features:
 * Move around the grid
 * Support for reading [plaintext cell files](https://www.conwaylife.com/wiki/Plaintext) (.cells)
 * Add or remove cells by clicking on them
+
+## Installation
+
+To install this program `make install` must be executed on the command prompt, this command will install the program to PREFIX/bin. This program has been only tested on Linux using X11.
 
 ## Usage
 
