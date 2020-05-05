@@ -17,7 +17,9 @@ This program has the following features:
 
 ## Installation
 
-To install this program `make install` must be executed on the command prompt, this command will install the program to PREFIX/bin. This program has been only tested on Linux using X11.
+To install this program you must have the SDL2 development library installed. Finally, `make install` must be executed on the command prompt, this command will install the program to PREFIX/bin. 
+
+This program has been only tested on Linux using X11 on exactly two distrobutions: Void Linux (glib) and Ubuntu.
 
 ## Usage
 
