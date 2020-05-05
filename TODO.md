@@ -4,7 +4,6 @@ This TODO list contains all of the features/additions we want to add to this pro
 1. Add RLE file format support
 2. Work on zoom in and zoom out 
 3. Add more comments to the code and generally add more documentation
-4. Make a .desktop file for this program
 
 If you can in any way help me do any of these things you are greatly appreciated!
 
@@ -16,3 +15,4 @@ This is a list of all the features that have been implemented since the TODO lis
 * Add pause / resume functionality
 * Add a zoom in and zoom out functionality
 * Make it so that when you click on a block in the grid you add a new cell to that block
+* Make a .desktop file for this program
