@@ -14,7 +14,7 @@ int roundUp(float n) {
 }
 
 void usage(void) {
-        fprintf(stderr, "usage: sdl-life [-gridw GridWidth] [-gridh GridHeight] [-fps fpsCap] [-cellcolor color] [-fillcell] [-grid] file\n");
+        fprintf(stderr, "usage: sdl-life [-gridw GridWidth] [-gridh GridHeight] [-fps fpsCap] [-cellcolor color] [-fillcell] [-grid] [-f/-file file]\n");
         exit(1);
 }
 

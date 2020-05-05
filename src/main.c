@@ -28,12 +28,12 @@ int main(int argc, char *args[]) {
 
 	fnameN = 0;
 
-	startOfDisplayedGridHeight = 25;
-	startOfDisplayedGridWidth = 25;
-	endOfDisplayedGridHeight = 75;
-	endOfDisplayedGridWidth = 75;
-	gridHeight = 100;
-	gridWidth = 100;
+	startOfDisplayedGridHeight = 50;
+	startOfDisplayedGridWidth = 50;
+	endOfDisplayedGridHeight = 100;
+	endOfDisplayedGridWidth = 100;
+	gridHeight = 200;
+	gridWidth = 200;
 
 	fpsCap = FPSCAP;
 
@@ -95,16 +95,16 @@ int main(int argc, char *args[]) {
 				emptyG = 0x55;
 				emptyB = 0x55;
 			}
+			else if(!strcmp(args[i], "-f") || !strcmp(args[i], "-file")) {
+				i++;
+				fnameN = i;
+			}
 			else
 				usage();
 		}
 
 		else
-			fnameN = i;
-	}
-
-	if(fnameN == 0) {
-		die(__FILE__, __LINE__, "Cell file hasn't been defined");
+			usage();
 	}
 
 	if(!initSdl())
@@ -113,7 +113,8 @@ int main(int argc, char *args[]) {
 	if(!initCells())
 		die(__FILE__, __LINE__, "Failed to initialize cells!");
 
-	readFile(args[fnameN]);
+	if(fnameN != 0) 
+		readFile(args[fnameN]);
 
 	quitLoop = false;
 
@@ -133,23 +134,45 @@ int main(int argc, char *args[]) {
 					}
 					break;
 				case SDL_KEYDOWN:
-					if(e.key.keysym.sym == SDLK_SPACE && e.key.keysym.mod == KMOD_NONE)
+					if(e.key.keysym.sym == SDLK_SPACE && e.key.keysym.mod == KMOD_NONE) {
 						paused = !paused;
+
+						SDL_SemWait(gLock); // Semaphore necessary because we are using gRenderer and gWindow
+
+						SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0x00);
+
+						SDL_RenderClear(gRenderer);
+
+						displayAllCells();
+
+						SDL_RenderPresent(gRenderer);
+
+						SDL_SemPost(gLock);
+
+					}
 					else if(e.key.keysym.sym == SDLK_w && e.key.keysym.mod == KMOD_NONE && startOfDisplayedGridHeight > 0) {
 						startOfDisplayedGridHeight--;
 						endOfDisplayedGridHeight--;
+
+						resizeWindow();
 					}
 					else if(e.key.keysym.sym == SDLK_s && e.key.keysym.mod == KMOD_NONE && endOfDisplayedGridHeight < gridHeight) {
 						startOfDisplayedGridHeight++;
 						endOfDisplayedGridHeight++;
+
+						resizeWindow();
 					}
 					else if(e.key.keysym.sym == SDLK_a && e.key.keysym.mod == KMOD_NONE && startOfDisplayedGridWidth > 0) {
 						startOfDisplayedGridWidth--;
 						endOfDisplayedGridWidth--;
+
+						resizeWindow();
 					}
 					else if(e.key.keysym.sym == SDLK_d && e.key.keysym.mod == KMOD_NONE && endOfDisplayedGridWidth < gridWidth) {
 						startOfDisplayedGridWidth++;
 						endOfDisplayedGridWidth++;
+
+						resizeWindow();
 					}
 					else if(e.key.keysym.sym == SDLK_PLUS && (endOfDisplayedGridHeight - startOfDisplayedGridHeight) > 1 
 							&& (endOfDisplayedGridWidth - startOfDisplayedGridWidth) > 2) {
@@ -176,10 +199,43 @@ int main(int argc, char *args[]) {
 					resizeWindow();
 
 					break;
+				case SDL_MOUSEBUTTONDOWN:
+					if(e.button.button == SDL_BUTTON_LEFT) {
+						writeCell((e.button.y / blockHeight) + startOfDisplayedGridHeight, (e.button.x / blockWidth) + startOfDisplayedGridWidth, live);
+
+						SDL_SemWait(gLock); // Semaphore necessary because we are using gRenderer and gWindow
+
+						SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0x00);
+
+						SDL_RenderClear(gRenderer);
+
+						displayAllCells();
+
+						SDL_RenderPresent(gRenderer);
+
+						SDL_SemPost(gLock);
+					}
+					else if(e.button.button == SDL_BUTTON_RIGHT) {
+						writeCell((e.button.y / blockHeight) + startOfDisplayedGridHeight, (e.button.x / blockWidth) + startOfDisplayedGridWidth, dead);
+
+						SDL_SemWait(gLock); // Semaphore necessary because we are using gRenderer and gWindow
+
+						SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0x00);
+
+						SDL_RenderClear(gRenderer);
+
+						displayAllCells();
+
+						SDL_RenderPresent(gRenderer);
+
+						SDL_SemPost(gLock);
+					}
+
+					break;
 			}
 		}
 
-		SDL_Delay(100);
+		SDL_Delay(500);
 	}
 
 	closeSdl();
@@ -261,6 +317,10 @@ int renderThread(void *data) {
 			frameTicks = SDL_GetTicks() - startTime;
 			if(frameTicks < (1000 / fpsCap))
 			       SDL_Delay((1000 / fpsCap) - frameTicks);	
+		}
+
+		else {
+			SDL_Delay(1000);
 		}
 	}
 	

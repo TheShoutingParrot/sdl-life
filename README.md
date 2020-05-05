@@ -17,20 +17,19 @@ This program has the following features:
 * Zoom in and out
 * Move around the grid
 * Support for reading [plaintext cell files](https://www.conwaylife.com/wiki/Plaintext) (.cells)
+* Add or remove cells by clicking on them
 
 ## Usage
 
-Simple example: `sdl-life glider.cells`
-
-Currently this program only reads and executes `.cells` files. If you don't give it a valid `.cells` file it will not work properly.
-
-One reason why many patterns that have a some what big bounding box break or atleast don't work exactly how they are supposed to is that the grid is by default really small; change the grid's size with the arguments `-gridw` and `-gridh` for example `sdl-life -gridw 100 -gridh 100 gosperglidergun.cells`.
+This program is an implementation of Conway's game of life. You can run this just by executing `sdl-life` on the command line. To add cells just left click and you will see a new cell on the grid, if the program isn't paused it will probably disappear immediately after it appears; press the space bar to pause or resume the program. A list of all the keybindings is below.
 
 ### Keybindings
 
 	-Space					-Pause/Resume
 	-w/a/s/d				-Move around the grid (up/down/left/right)
-	-Mouse scroll and PLUS (+) / MINUS (-)	-Zoom in and out
+	-Mouse scroll or PLUS (+) / MINUS (-)	-Zoom in and out
+	-Left click				-Add cell
+	-Right click				-Remove cell
 
 ## Screenshots
 

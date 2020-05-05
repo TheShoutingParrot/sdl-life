@@ -105,6 +105,25 @@ void displayCell(cellState_t status, SDL_Rect location) {
                 else
                         SDL_RenderDrawRect(gRenderer, &location);
         }
+
+	else if(status == potentialDead) {
+                SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, filledB, 0);
+
+                if(fillCell)
+                        SDL_RenderFillRect(gRenderer, &location);
+                else
+                        SDL_RenderDrawRect(gRenderer, &location);
+		
+	}
+	else if(status == potentialLive) {
+                SDL_SetRenderDrawColor(gRenderer, 0xff, 0x00, 0xff, 0);
+
+                if(fillCell)
+                        SDL_RenderFillRect(gRenderer, &location);
+                else
+                        SDL_RenderDrawRect(gRenderer, &location);
+		
+	}
         
         else {
                 SDL_SetRenderDrawColor(gRenderer, emptyR, emptyG, emptyB, 0);
