@@ -19,13 +19,17 @@ sdl-life: $(OBJ)
 
 install: all
 	mkdir -p $(PREFIX)/bin
+	mkdir -p $(APPLICATIONS)
+	mkdir -p $(PREFIX)/share/sdl-life
 	cp sdl-life $(PREFIX)/bin/sdl-life
 	chmod +x $(PREFIX)/bin/sdl-life
-	cp sdl-life.desktop $(APPLICATIONS)/sdl-life.desktop # TODO: Create a .desktop file for this program
+	cp sdl-life.desktop $(APPLICATIONS)/sdl-life.desktop 
+	cp logo.png $(PREFIX)/share/sdl-life/
 
 uninstall: clean
 	rm -f $(PREFIX)/bin/sdl-life
 	rm -f $(APPLICATIONS)/sdl-life.desktop
+	rm -f -r $(PREFIX)/share/sdl-life/
 
 clean:
 	rm -f sdl-life main.o cell.o util.o 

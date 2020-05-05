@@ -5,4 +5,5 @@ GenericName=life
 Comment=This is a graphical implementation of Conway's game of life
 Keywords=life;game;conway;cell;cellular automaton;zero-player;
 Terminal=false
+Logo=/usr/local/share/sdl-life/logo.png
 Exec=sdl-life
