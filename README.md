@@ -21,7 +21,7 @@ To install this program `make install` must be executed on the command prompt, t
 
 ## Usage
 
-This program is an implementation of Conway's game of life. You can run this just by executing `sdl-life` on the command line. To add cells just left click and you will see a new cell on the grid, if the program isn't paused it will probably disappear immediately after it appears; press the space bar to pause or resume the program. A list of all the [keybindings](#features) is below.
+This program is an implementation of Conway's game of life. You can run this just by executing `sdl-life` on the command line. To add cells just left click and you will see a new cell on the grid, if the program isn't paused it will probably disappear immediately after it appears; press the space bar to pause or resume the program. A [list of all the keybindings](#keybindings) is below.
 
 If you want to see [ready made patterns](https://www.conwaylife.com/wiki/Pattern) in action you can do that if you have a valid [.cells](https://www.conwaylife.com/wiki/Plaintext) file containing a pattern, then just execute `sdl-life -f pattern.cells` and you will see the pattern stored on the file in action. Currently only the [plaintext / .cells format](https://www.conwaylife.com/wiki/Plaintext) is supported for reading patterns. Reading the most common file format for storing large patterns, the [Run Length Encoded](https://www.conwaylife.com/wiki/Run_Length_Encoded) file format, should be supported soon.
 
