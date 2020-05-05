@@ -50,11 +50,7 @@ int main(int argc, char *args[]) {
 	// This for loop parses through the command line arguments
 	for(i = 1; i < argc; i++) {
 		if(*args[i] == '-') {
-			if(!strcmp(args[i], "-gridw"))
-				gridWidth = atoi(args[++i]);
-			else if(!strcmp(args[i], "-gridh"))
-				gridHeight = atoi(args[++i]);
-			else if(!strcmp(args[i], "-fps"))
+			if(!strcmp(args[i], "-fps"))
 				fpsCap = atoi(args[++i]);
 			else if(!strcmp(args[i], "-cellcolor")) {
 				i++;
