@@ -21,10 +21,11 @@ install: all
 	mkdir -p $(PREFIX)/bin
 	cp sdl-life $(PREFIX)/bin/sdl-life
 	chmod +x $(PREFIX)/bin/sdl-life
-	# cp sdl-life.desktop $(APPLICATIONS)/sdl-life.desktop # TODO: Create a .desktop file for this program
+	cp sdl-life.desktop $(APPLICATIONS)/sdl-life.desktop # TODO: Create a .desktop file for this program
 
 uninstall: clean
 	rm -f $(PREFIX)/bin/sdl-life
+	rm -f $(APPLICATIONS)/sdl-life.desktop
 
 clean:
 	rm -f sdl-life main.o cell.o util.o 
