@@ -2,7 +2,7 @@
 
 This program is a simple graphical implementation of Conway's game of life which uses SDL2 and is written in C. Please remember that this implementation is very early in development. Look at the [TODO.md](TODO.md) file to see this program's TODO list
 
-![Alt text](screenshots/screenshot-i3-5.png?raw=true "Glider")
+![Alt text](images/screenshot-i3-5.png?raw=true "Glider")
 
 ## Features
 
@@ -37,18 +37,18 @@ If you want to see [ready made patterns](https://www.conwaylife.com/wiki/Pattern
 
 ## Screenshots
 
-![Alt text](screenshots/screenshot-gnome-1.png?raw=true "Title")
-![Alt text](screenshots/screenshot-gnome-2.png?raw=true "Title")
+![Alt text](images/screenshot-gnome-1.png?raw=true "Title")
+![Alt text](images/screenshot-gnome-2.png?raw=true "Title")
 
 sdl-life as seen on Ubuntu gnome.
 
-![Alt text](screenshots/screenshot-i3-1.png?raw=true "Title")
-![Alt text](screenshots/screenshot-i3-2.png?raw=true "Title")
-![Alt text](screenshots/screenshot-i3-3.png?raw=true "Title")
+![Alt text](images/screenshot-i3-1.png?raw=true "Title")
+![Alt text](images/screenshot-i3-2.png?raw=true "Title")
+![Alt text](images/screenshot-i3-3.png?raw=true "Title")
 
 As you can see sdl-life supports a plentitude of colors.
 
-![Alt text](screenshots/screenshot-i3-4.png?raw=true "Title")
+![Alt text](images/screenshot-i3-4.png?raw=true "Title")
 ## License information
 
 This project is licensed under the terms of the [BSD 2-Clause license](https://opensource.org/licenses/BSD-2-Clause), see the [LICENSE](LICENSE) file for further information.

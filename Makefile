@@ -24,7 +24,7 @@ install: all
 	cp sdl-life $(PREFIX)/bin/sdl-life
 	chmod +x $(PREFIX)/bin/sdl-life
 	cp sdl-life.desktop $(APPLICATIONS)/sdl-life.desktop 
-	cp logo.png $(PREFIX)/share/sdl-life/
+	cp images/logo.png $(PREFIX)/share/sdl-life/
 
 uninstall: clean
 	rm -f $(PREFIX)/bin/sdl-life
