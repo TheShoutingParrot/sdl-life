@@ -13,7 +13,7 @@ int main(int argc, char *args[]) {
 	    ruleN; // The index of the rule string in the args list
 	size_t i;
 
-	paused = false;
+	paused = true;
 
 	fnameN = 0;
 	ruleN = 0; 
@@ -170,12 +170,14 @@ int main(int argc, char *args[]) {
 						resizeWindow();
 					}
 					else if(e.key.keysym.sym == SDLK_PLUS && (endOfDisplayedGridHeight - startOfDisplayedGridHeight) > 1 
-							&& (endOfDisplayedGridWidth - startOfDisplayedGridWidth) > 2) {
+							&& (endOfDisplayedGridWidth - startOfDisplayedGridWidth) > 2 &&
+							e.key.keysym.mod == KMOD_NONE) {
 						zoomIn();
 
 						resizeWindow();
 					}
-					else if(e.key.keysym.sym == SDLK_MINUS && startOfDisplayedGridHeight > 0 && startOfDisplayedGridWidth > 0) {
+					else if(e.key.keysym.sym == SDLK_MINUS && startOfDisplayedGridHeight > 0 && startOfDisplayedGridWidth > 0 &&
+							e.key.keysym.mod == KMOD_NONE) {
 						zoomOut();
 
 						resizeWindow();
@@ -424,7 +426,6 @@ void setRules(const char *ruleString) {
 	else if(tolower(*ruleString) == 'b') {
 		n = 0;
 		for(i = 1; i < strlen(ruleString); i++) {
-			putchar(*(ruleString+i));
 			if(*(ruleString+i) == '/')
 				break;
 			else if(isdigit(*(ruleString+i)))
@@ -439,7 +440,6 @@ void setRules(const char *ruleString) {
 
 		n = 0;
 		for(i = i+1; i < strlen(ruleString); i++) {
-			putchar(*(ruleString+i));
 			if(tolower(*(ruleString+i)) == 's');
 			else if(isdigit(*(ruleString+i)))
 				*(surviveRule+n++) = *(ruleString+i) - '0';
