@@ -61,6 +61,32 @@ uint8_t cellsAroundCell(size_t row, size_t col) {
         return r;
 }
 
+bool willItSurvive(size_t cellsAround) {
+	uint8_t i;
+
+	i = 0;
+
+	while(*(surviveRule+i) != -1) {
+		if(cellsAround == *(surviveRule+i++))
+			return true;
+	}
+
+	return false;
+}
+
+bool newBirth(size_t cellsAround) {
+	uint8_t i;
+
+	i = 0;
+
+	while(*(birthRule+i) != -1) {
+		if(cellsAround == *(birthRule+i++))
+			return true;
+	}
+
+	return false;
+}
+
 // This function proceeds to the next generation "enforcing" the rules in some sense
 void enforceRules(void) {
         size_t r, c, cellsAround;
@@ -70,15 +96,14 @@ void enforceRules(void) {
                         cellsAround = cellsAroundCell(r, c);
 
                         if(readCell(r, c) == live) {
-                                if(cellsAround < 2) // less than two cells as neighbors results in death (by isolation)
-                                        writeCell(r, c, potentialDead);
-                                else if(cellsAround >= 4) // more than four cells as neighbors or more results in death (by overpopulation)
+				if(willItSurvive(cellsAround));
+                                else
                                         writeCell(r, c, potentialDead);
                         }
 
                         else if(readCell(r, c) == dead) {
-                                if(cellsAround == 3)
-                                        writeCell(r, c, potentialLive); // exactly three cells as neighbors result in a birth of a new cell
+                                if(newBirth(cellsAround))
+                                        writeCell(r, c, potentialLive); 
                         }
                 }
         }
@@ -105,25 +130,6 @@ void displayCell(cellState_t status, SDL_Rect location) {
                 else
                         SDL_RenderDrawRect(gRenderer, &location);
         }
-
-	else if(status == potentialDead) {
-                SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, filledB, 0);
-
-                if(fillCell)
-                        SDL_RenderFillRect(gRenderer, &location);
-                else
-                        SDL_RenderDrawRect(gRenderer, &location);
-		
-	}
-	else if(status == potentialLive) {
-                SDL_SetRenderDrawColor(gRenderer, 0xff, 0x00, 0xff, 0);
-
-                if(fillCell)
-                        SDL_RenderFillRect(gRenderer, &location);
-                else
-                        SDL_RenderDrawRect(gRenderer, &location);
-		
-	}
         
         else {
                 SDL_SetRenderDrawColor(gRenderer, emptyR, emptyG, emptyB, 0);

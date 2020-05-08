@@ -14,6 +14,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <string.h>
+#include <ctype.h>
 
 #define WINDOW_NAME     "sdl-life"
 #define WINDOWW         640
@@ -58,6 +59,9 @@ uint8_t                 emptyR,
                         filledG,
                         filledB;
 
+int8_t			*birthRule,
+			*surviveRule;
+
 cellState_t             *cells;
 
 bool                    quitLoop,
@@ -81,9 +85,13 @@ bool updateCells(int w, int h);
 void writeCell(size_t row, size_t col, cellState_t state);
 cellState_t readCell(size_t row, size_t col);
 uint8_t cellsAroundCell(size_t row, size_t col);
+
+bool willItSurvive(size_t cellsAround);
+bool newBirth(size_t cellsAround);
 void enforceRules(void);
 
 void readFile(const char *fname);
+void setRules(const char *ruleString);
 
 void displayCell(cellState_t status, SDL_Rect location);
 void displayAllCells(void);

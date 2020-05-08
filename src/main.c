@@ -4,29 +4,19 @@
  * All rights reserved
  */
 
-/*
- * Here's a short TODO list: (this isn't a complete list anymore, some goals have been added to the TODO.md file and haven't been added here and haven't been added heree.)
- * 	PRIORITY 1: Add multithreading (one render thread and one event handling thread)	DONE!
- * 	PRIORITY 2: Add RLE file format support
- * 	PRIORITY 3: Add a zoom in and zoom out functionality					(somewhat) DONE!
- *	PRIORITY 4: Add pause / resume functionality						DONE!
- * 	PRIORITY 5: Add more comments to the code and generally add more documentation
- *
- *
- * If you can in any way help me do any of these things you are greatly appreciated!
- */
-
 #include "sdl-life.h"
 
 int main(int argc, char *args[]) {
 	SDL_Thread *renderThreadID;
 	SDL_Event e;
-	int fnameN; // The index of the file name in the args list
+	int fnameN, // The index of the file name in the args list
+	    ruleN; // The index of the rule string in the args list
 	size_t i;
 
 	paused = false;
 
 	fnameN = 0;
+	ruleN = 0; 
 
 	startOfDisplayedGridHeight = 50;
 	startOfDisplayedGridWidth = 50;
@@ -95,6 +85,10 @@ int main(int argc, char *args[]) {
 				i++;
 				fnameN = i;
 			}
+			else if(!strcmp(args[i], "-rulestring") || !strcmp(args[i], "-rules") || !strcmp(args[i], "-r")) {
+				i++;
+				ruleN = i;
+			}
 			else
 				usage();
 		}
@@ -111,6 +105,11 @@ int main(int argc, char *args[]) {
 
 	if(fnameN != 0) 
 		readFile(args[fnameN]);
+
+	if(ruleN != 0)
+		setRules(args[ruleN]);
+	else
+		setRules(NULL);
 
 	quitLoop = false;
 
@@ -398,4 +397,59 @@ void readFile(const char *fname) {
 	}
 
 	fclose(cellFile);
+}
+
+void setRules(const char *ruleString) {
+	uint8_t i,
+		n;
+
+	i = 0;
+	birthRule = (int8_t *)malloc(10);
+	if(birthRule == NULL)
+		die(__FILE__, __LINE__, "Failed to allocate memory");
+
+	surviveRule = (int8_t *)malloc(10);
+	if(surviveRule  == NULL)
+		die(__FILE__, __LINE__, "Failed to allocate memory");
+
+	if(ruleString == NULL) {
+		*(birthRule) = 3;
+		*(birthRule+1) = -1;
+
+		*(surviveRule) = 2;
+		*(surviveRule+1) = 3;
+		*(surviveRule+2) = -1;
+	}
+
+	else if(tolower(*ruleString) == 'b') {
+		n = 0;
+		for(i = 1; i < strlen(ruleString); i++) {
+			putchar(*(ruleString+i));
+			if(*(ruleString+i) == '/')
+				break;
+			else if(isdigit(*(ruleString+i)))
+				*(birthRule+n++) = *(ruleString+i) - '0';
+			else
+				die(__FILE__, __LINE__, "This doesn't conform to the rulestring b/s notation");
+		}
+
+		*(birthRule+n++) = -1;
+		if(!realloc(birthRule, n))
+			die(__FILE__, __LINE__, "Failed to reallocate memory");
+
+		n = 0;
+		for(i = i+1; i < strlen(ruleString); i++) {
+			putchar(*(ruleString+i));
+			if(tolower(*(ruleString+i)) == 's');
+			else if(isdigit(*(ruleString+i)))
+				*(surviveRule+n++) = *(ruleString+i) - '0';
+			else
+				die(__FILE__, __LINE__, "This doesn't conform to the rulestring b/s notation");
+		}
+
+		*(surviveRule+n++) = -1;
+		if(!realloc(surviveRule, n))
+			die(__FILE__, __LINE__, "Failed to reallocate memory");
+
+	}
 }
