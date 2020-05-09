@@ -444,12 +444,40 @@ void setRules(const char *ruleString) {
 			else if(isdigit(*(ruleString+i)))
 				*(surviveRule+n++) = *(ruleString+i) - '0';
 			else
-				die(__FILE__, __LINE__, "This doesn't conform to the rulestring b/s notation");
+				die(__FILE__, __LINE__, "This rulestring doesn't conform to b/s notation (must be b/s or s/b notation)");
 		}
 
 		*(surviveRule+n++) = -1;
 		if(!realloc(surviveRule, n))
 			die(__FILE__, __LINE__, "Failed to reallocate memory");
 
+	}
+
+	else if(isdigit(*ruleString)) {
+		n = 0;
+		for(i = 0; i < strlen(ruleString); i++) {
+			if(*(ruleString+i) == '/')
+				break;
+			else if(isdigit(*(ruleString+i)))
+				*(surviveRule+n++) = *(ruleString+i) - '0';
+			else
+				die(__FILE__, __LINE__, "This rulestring doesn't conform to s/b notation (must be b/s or s/b notation)");
+		}
+
+		*(surviveRule+n++) = -1;
+		if(!realloc(surviveRule, n))
+			die(__FILE__, __LINE__, "Failed to reallocate memory");
+
+		n = 0;
+		for(i = i+1; i < strlen(ruleString); i++) {
+			if(isdigit(*(ruleString+i)))
+				*(birthRule+n++) = *(ruleString+i) - '0';
+			else
+				die(__FILE__, __LINE__, "This doesn't conform to the rulestring b/s notation");
+		}
+
+		*(birthRule+n++) = -1;
+		if(!realloc(birthRule, n))
+			die(__FILE__, __LINE__, "Failed to reallocate memory");
 	}
 }
